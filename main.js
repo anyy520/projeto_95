@@ -1,112 +1,91 @@
 var canvas = new fabric.Canvas('myCanvas');
-ball_y=450;
-ball_x=350;
-hole_y=0;
-hole_x=350;
+var ball_y = 450;
+var ball_x = 350;
+var hole_y = 0;
+var hole_x = 350;
 
-block_image_width = 5;
-block_image_height = 5;
+var block_image_width = 50; // Ajustado para o tamanho real da imagem
+var block_image_height = 50;
 
-function load_img(){
-	new_image();
+function load_img() {
+    new_image();
 }
 
-function new_image()
-{
-	fabric.Image.fromURL("bola.png", function(Img) {
-	ball_obj = Img;
-	ball_obj.scaleToWidth(50);
-	ball_obj.scaleToHeight(50);
-	ball_obj.set({
-	top:ball_y,
-	left:ball_x
-	});
-	canvas.add(ball_obj);
-	});
+function new_image() {
+    fabric.Image.fromURL("bola.png", function(Img) {
+        ball_obj = Img;
+        ball_obj.scaleToWidth(block_image_width);
+        ball_obj.scaleToHeight(block_image_height);
+        ball_obj.set({
+            top: ball_y,
+            left: ball_x
+        });
+        canvas.add(ball_obj);
+    });
 }
 
 window.addEventListener("keydown", my_keydown);
 
-function my_keydown(e)
-{
-	keyPressed = e.keyCode;
-	console.log(keyPressed);
-	if((ball_x==350)&&(ball_y<=50)){
-		canvas.remove(ball_obj);
-		console.log("Você fez um gol!!!");
-		document.getElementById("hd3").innerHTML="Você fez um gol!!!";
-	    document.getElementById("myCanvas").style.borderColor="red";
-	}
-	else{
-		if(keyPressed == '38')
-		{
-			up();
-			console.log("cima");
-		}
-		if(keyPressed == '40')
-		{
-			down();
-			console.log("baixo");
-		}
-		if(keyPressed == '37')
-		{
-			left();
-			console.log("esquerda");
-		}
-		if(keyPressed == '39')
-		{
-			right();
-			console.log("direita");
-		}
-	}
-	
-	function up()
-	{
-		if(ball_y >=5)
-		{
-			
-			ball_y = ball_y - block_image_height;
-			console.log("altura da imagem do bloco = " + block_image_height);
-			console.log("Quando a tecla para cima é pressionada, X =  " + ball_x + " , Y = "+ball_y);
-			canvas.remove(ball_obj);
-			new_image();
-		}
-	}
-    //Programe a função "down()"
-	function down()
-	{
-	if(ball_y <=450){
-        ball_y = ball_y - block_image_height;
-        console.log("altura da imagem do bloco = " + block_image_height);
-        console.log("Quando a tecla para baixo é pressionada, X =  " + ball_x + " , Y = "+ball_y);
+function my_keydown(e) {
+    keyPressed = e.keyCode;
+    console.log(keyPressed);
+    if (ball_x === hole_x && ball_y <= hole_y) {
         canvas.remove(ball_obj);
-        new_image();   
+        console.log("Você fez um gol!!!");
+        document.getElementById("hd3").innerHTML = "Você fez um gol!!!";
+        document.getElementById("myCanvas").style.borderColor = "red";
+    } else {
+        if (keyPressed === 38) {
+            // Seta para cima
+            up();
+            console.log("cima");
+        }
+        if (keyPressed === 40) {
+            // Seta para baixo
+            down();
+            console.log("baixo");
+        }
+        if (keyPressed === 37) {
+            // Seta para a esquerda
+            left();
+            console.log("esquerda");
+        }
+        if (keyPressed === 39) {
+            // Seta para a direita
+            right();
+            console.log("direita");
+        }
     }
-	}
+}
 
-	function left()
-	{
-		if(ball_x >5)
-		{
-			ball_x = ball_x - block_image_width;
-			console.log("largura da imagem do bloco = " + block_image_width);
-			console.log("Quando a tecla esquerda é pressionada, X =  " + ball_x + " , Y = "+ball_y);
-			canvas.remove(ball_obj);
-			new_image();
-		}
-	}
+function up() {
+    if (ball_y >= block_image_height) {
+        ball_y -= block_image_height;
+        canvas.remove(ball_obj);
+        new_image();
+    }
+}
 
-    //Programe a função "right()"
-	function right()
-	{
-        if(ball_x <=1050)
-		{
-			ball_x = ball_x - block_image_width;
-			console.log("largura da imagem do bloco = " + block_image_width);
-			console.log("Quando a tecla direita é pressionada, X =  " + ball_x + " , Y = "+ball_y);
-			canvas.remove(ball_obj);
-			new_image();
-		}
-	}
-	
+function down() {
+    if (ball_y + block_image_height <= canvas.height) {
+        ball_y += block_image_height;
+        canvas.remove(ball_obj);
+        new_image();
+    }
+}
+
+function left() {
+    if (ball_x >= block_image_width) {
+        ball_x -= block_image_width;
+        canvas.remove(ball_obj);
+        new_image();
+    }
+}
+
+function right() {
+    if (ball_x + block_image_width <= canvas.width) {
+        ball_x += block_image_width;
+        canvas.remove(ball_obj);
+        new_image();
+    }
 }
